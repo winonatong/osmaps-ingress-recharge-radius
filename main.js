@@ -1,4 +1,4 @@
-var map = L.map('mapid').setView([51.505, -0.09], 10);
+var map = L.map('mapid').setView([45.5017, -73.5673], 5);
 var radiusInput = document.querySelector('#radiusInput');
 var unitSelector = document.querySelector('#unitSelector');
 
@@ -34,16 +34,20 @@ L.Control.geocoder({
 	map.fitBounds(poly.getBounds());
 }).addTo(map);
 
+
 map.on('click', function(event) {
-  var radius = (radiusInput.value / earthRadii[unitSelector.value]) * earthRadii['mt'];
-  var circle = L.circle(event.latlng, {
-	  color: '#6593f1',
-	  fillColor: '#bacff9',
-	  fillOpacity: 0.5,
-	  radius: radius
-	}).addTo(map);
-	circle.addEventListener('contextmenu', function() {
-		map.removeLayer(this);
-	});
+	for (var i = 1; i <= 16; i++) {
+        if ($("#level"+i).is(':checked')) {
+            var radius = (i*250 / earthRadii['km']) * earthRadii['mt'];
+			var circle = L.circle(event.latlng, {
+				color: '#00c35a',
+				fillColor: '#00c35a',
+				fillOpacity: 0.05,
+				radius: radius
+			}).addTo(map);
+        }
+    }
 });
+
+
 

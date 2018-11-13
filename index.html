@@ -11,9 +11,70 @@
    crossorigin=""/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <link rel="stylesheet" href="main.min.css">
+  <style>
+          /* Mine */
+        body { font-family: Helvetica, Arial, sans-serif; font-size: 12px; }
+        form#options em { color: #666; }
+        form#search input { position: absolute; top: 5px; right: 105px; width: 50%; }
+        /*ingress*/
+        form#options input.level {display:inline-block; margin-right:10px;}
+        fieldset.agent-level {display:block; margin: 2px 0; border:0; display: inline;}
+        fieldset.select-toggle {text-align: center;}
+        fieldset.select-toggle .level-label {width:75px;}
+        .level-label {display:inline-block; width:60px;}
+        .clear-data, .toggle-toolbar {color:#ffffff;
+            background-color:#00c35a;
+            font-size:14px;
+            padding: 6px 14px;
+            border: 0px;
+            border-radius:3px;
+            margin:0;
+            vertical-align: middle;
+            text-decoration:none;
+        line-height: 30px;}
+        #controls {width:250px;}
+        .directions {padding:10px 0 10px;}
+  </style>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
 </head>
 <body>
-		<div id="controls">
+
+    <div id="controls">
+    <form id="options">
+        <div><a class="toggle-toolbar" onclick="$('#main-toolbar').toggle()">Expand/Collapse options</a></div>
+        <div id="main-toolbar">
+            <div class="directions"><em>Click the map to show recharge radii for selected agent levels at the position clicked. </em></div>
+            <div id="agent_levels">
+                <fieldset class="select-toggle"><label class="level-label" for="check-toggle">Uncheck All</label> <input class="level" type="checkbox" checked name="check-toggle" id="checkbox-toggle" /></fieldset>
+            </div>
+            <script type="text/javascript">
+                for (var i=1; i<=16; i++) {
+                    $('#agent_levels').append('<fieldset class="agent-level"><label class="level-label" for="level'+i+'">Level '+i+'</label> <input class="level" type="checkbox" checked name="level'+i+'" id="level'+i+'" /></fieldset>');
+                }
+                $('#checkbox-toggle').change(
+                    function(){
+                        if ($(this).is(':checked')) {
+                            for (var i = 1; i <= 16; i++) {
+                                $("#level"+i).prop('checked', true);
+                            }
+                            $("label[for='check-toggle']").text('Uncheck All');
+                        } else {
+                            for (var i = 1; i <= 16; i++) {
+                                $("#level"+i).prop('checked', false);
+                            }
+                            $("label[for='check-toggle']").text('Check All');
+                        }   
+                    }
+                );
+            </script>
+
+            <div><a class="clear-data" href="/ingress-recharge-radius/">Clear Data</a></div>
+        </div>
+    </form>
+    </div>
+
+
+		<!--div id="controls">
 			<label for="radiusInput">Radius</label><input type="number" value="5" min="0" id="radiusInput" name="radiusInput" autofocus="">
 			<label for="unitSelector">Units</label><select id="unitSelector" name="unitSelector">
         <option value="mi">Miles</option>
@@ -30,12 +91,13 @@
       </select>
       <p>Click to place a circle, right click to remove.</p>
 		</div>
-	</form>
+	</form-->
 	<div id="mapid"></div>
+  
 	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
    integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
    crossorigin=""></script>
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <script src="main.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
